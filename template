@@ -1,0 +1,24 @@
+# Day ..., ...
+
+# Q1
+
+# Q2
+
+# Input
+def parse_input(file):
+    with open(file, 'r') as inp:
+        return []
+
+
+if __name__ == '__main__':
+    # Samples
+    sample_input = parse_input('sample')
+
+    # Tests
+
+    # Puzzle input
+    puzzle_input = parse_input('puzzle-input')
+
+    # Results
+    print(f'Q1: ')
+    print(f'Q2: ')
