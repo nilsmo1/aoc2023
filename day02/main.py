@@ -2,26 +2,18 @@
 
 # Q1
 def get_sum_games(games):
-    red, green, blue, game_sum = 12, 13, 14, 0
-    for nr, g in games.items():
-        for s in g:
+    colors = {'red': 12, 'green': 13, 'blue': 14}
+    game_sum = 0
+    for nr, game in games.items():
+        for sack in game:
             valid = True
-            for item in s:
-                n = int(item.strip().split()[0])
-                if 'red' in item:
-                    if n > red:
+            for item in sack:
+                for c in colors:
+                    n = int(item.strip().split()[0])
+                    if c in item and n > colors[c]:
                         valid = False
                         break
-                elif 'green' in item:
-                    if n > green:
-                        valid = False
-                        break
-                elif 'blue' in item:
-                    if n > blue:
-                        valid = False
-                        break
-            if not valid:
-                break
+            if not valid: break
         game_sum += nr if valid else 0
     return game_sum
 
@@ -30,14 +22,14 @@ def get_sum_games(games):
 def get_power_game(games):
     game_sum = 0
     for nr, g in games.items():
-        lr, lg, lb = 0, 0, 0
+        colors = {'red': 0, 'green': 0, 'blue': 0}
         for s in g:
             for item in s:
                 n = int(item.strip().split()[0])
-                if   'red'   in item: lr = max(n, lr)
-                elif 'green' in item: lg = max(n, lg)
-                elif 'blue'  in item: lb = max(n, lb)
-        game_sum += lr*lg*lb
+                for c in colors:
+                    if c in item: colors[c] = max(n, colors[c])
+        r, g, b = colors.values()
+        game_sum += r * g * b
     return game_sum
 
 # Input
