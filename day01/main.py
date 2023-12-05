@@ -1,25 +1,31 @@
 # Day 1, Trebuchet?!
 from typing import List
-import re
+
 
 # Q1
 def get_sum(doc: List[str]) -> int:
-    return sum(int(d[0]+d[-1]) if d else 0 for d in [[e for e in l if e.isdigit()] for l in doc])
+    nums = [[c for c in line if c.isdigit()] for line in doc]
+    return sum(int(ds[0] + ds[-1]) for ds in nums)
+
 
 # Q2
 def get_sum2(doc: List[str]) -> int:
-    ds = ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine"]
-    res = 0
+    nums = []
+    digits = ["one", "two",   "three", "four", "five",
+              "six", "seven", "eight", "nine"]
     for line in doc:
-        di = {}
-        for i, d in enumerate(ds):
-            occs = [m.start() for m in re.finditer(d, line)]
-            for occ in occs: di[occ] = str(i+1)
+        sub_nums = []
         for i, c in enumerate(line):
-            if c.isdigit(): di[i] = c
-        l, r = di[min(di)], di[max(di)]
-        res += int(l+r)
-    return res
+            if c.isdigit():
+                sub_nums.append(c)
+                continue
+            for val, d in enumerate(digits):
+                if line[i:].startswith(d):
+                    sub_nums.append(str(val+1))
+                    break
+        nums.append(sub_nums)
+    return sum(int(ds[0]+ds[-1]) for ds in nums)
+
 
 # Input
 def parse_input(file):
@@ -33,7 +39,7 @@ if __name__ == '__main__':
     sample_input2 = parse_input('sample2')
 
     # Tests
-    assert get_sum(sample_input1) == 142
+    assert get_sum(sample_input1)  == 142
     assert get_sum2(sample_input2) == 281
 
     # Puzzle input
