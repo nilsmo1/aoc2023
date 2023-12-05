@@ -20,7 +20,8 @@ def get_sum2(doc: List[str]) -> int:
                 sub_nums.append(c)
                 continue
             for val, d in enumerate(digits):
-                if line[i:].startswith(d):
+                end = i+len(d)
+                if line[i:end] == d:
                     sub_nums.append(str(val+1))
                     break
         nums.append(sub_nums)
