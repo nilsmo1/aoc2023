@@ -15,10 +15,16 @@ if __name__ == '__main__':
     sample_input = parse_input('sample')
 
     # Tests
+    t1 = 0
+    t2 = 0
+    assert t1 == 0, t1
+    assert t2 == 0, t2
 
     # Puzzle input
     puzzle_input = parse_input('puzzle-input')
 
     # Results
-    print(f'Q1: ')
-    print(f'Q2: ')
+    q1 = 0
+    q2 = 0
+    print(f'Q1: {q1}')
+    print(f'Q2: {q2}')
