@@ -10,6 +10,16 @@ def solve(cards):
     return score
 
 # Q2
+def scratchcards(cards):
+    cl = len(cards)
+    wins = [len([e for e in winning if e in nums]) for nums, winning in cards]
+    n_cards = {n : 1 for n in range(0, cl)}
+    for cn, n in n_cards.items():
+        w = wins[cn]
+        for card in range(1, w + 1):
+            if cn+card not in n_cards: break
+            n_cards[cn+card] += n
+    return sum(n_cards.values())
 
 # Input
 def parse_input(file):
@@ -29,6 +39,7 @@ if __name__ == '__main__':
 
     # Tests
     t1 = solve(sample_input)
+    t2 = scratchcards(sample_input)
     assert t1 == 13, t1
 
     # Puzzle input
@@ -36,6 +47,6 @@ if __name__ == '__main__':
 
     # Results
     q1 = solve(puzzle_input)
-    q2 = None
+    q2 = scratchcards(puzzle_input)
     print(f'Q1: {q1}')
     print(f'Q2: {q2}')
