@@ -1,5 +1,7 @@
 # Day 3, Gear Ratios
 
+from typing import NamedTuple
+
 # Q1
 def cond(c):
     return not c.isdigit() and not c.isalpha() and c != '.'
@@ -28,47 +30,51 @@ def get_sum(schema):
     return sum(numbers)
 
 # Q2
-def gear_cond(c):
-    return c.isdigit()
+class Num(NamedTuple):
+    value: int
+    row  : int
+    start: int
+    end  : int
+    def __eq__(self, other):
+        return (self.row, self.start) == (other.row, other.start)
 
-def get_nums(r, c, schema):
-    #print("found", r, c)
+
+def get_numbers(schema):
+    numbers = []
+    for r, row in enumerate(schema):
+        buffer = 0
+        for c, char in enumerate(row):
+            if char.isdigit():
+                buffer = buffer * 10 + int(char)
+            if not char.isdigit() or c == len(row)-1:
+                if buffer:
+                    numbers.append(Num(buffer, r, c-len(str(buffer)), c-1))
+                buffer = 0
+    return numbers
+
+def get_neighbours(r, c, schema):
+    found = []
     ids = [(-1, -1), (-1, 0), (-1, 1), (1, -1), (1, 0), (1, 1), (0, -1), (0, 1)]
-    connections = [(r+rr, c+cc) for cc, rr in ids if
-                   in_bounds(r+rr, c+cc, schema) and
-                   schema[r+rr][c+cc].isdigit()]
-    #print("connections", connections)
-    nums = []
-    invalids = []
-    for i, (row, col) in enumerate(connections[:-1]):
-        r2, c2 = connections[i+1]
-        if row == r2 and abs(col - c2) == 1:
-            invalids.append(i)
+    neighbours = [(r+rr, c+cc) for rr, cc in ids if in_bounds(r+rr, c+cc, schema)]
+    numbers = get_numbers(schema)
+    for num in numbers:
+        for row, col in neighbours:
+            if row == num.row and num.start <= col <= num.end:
+                found.append(num)
+    return set(found)
 
-    for i, (row, col) in enumerate(connections):
-        if i in invalids: continue
-        start, end = col, col
-        #print(f"{schema[row][end]} at {start}, {end}, {row=}")
-        while schema[row][end].isdigit() and end + 1 < len(schema[row]):
-            #print(schema[row][end])
-            end += 1
-        while schema[row][start-1].isdigit() and start > 0:
-            start -= 1
-        substring = schema[row][start:end]
-        #print(substring, start, end)
-        nums.append(int(substring))
-    if len(nums) != 2: return 0
-    n1, n2 = nums
-    return n1 * n2
 
 def gear_ratio(schema):
     products = []
-    for row, r in enumerate(schema):
-        for col, c in enumerate(r):
-            if c == '*' and symbol_neighbour(row, col, schema, gear_cond) > 1:
-                products.append(get_nums(row, col, schema))
-                #print(c, products)
+    for r, row in enumerate(schema):
+        for c, char in enumerate(row):
+            if char == '*':
+                n = get_neighbours(r, c, schema)
+                if len(n) != 2: continue
+                n1, n2 = n
+                products.append(n1.value * n2.value)
     return sum(products)
+
 
 # Input
 def parse_input(file):

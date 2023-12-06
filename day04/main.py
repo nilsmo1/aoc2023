@@ -1,8 +1,13 @@
 # Day 4, Scratchcards
 
 # Q1
-def solve():
-    pass
+def solve(cards):
+    score = 0
+    for nums, winning in cards:
+        wins = len([e for e in winning if e in nums])
+        if not wins: continue
+        score += 2**(wins-1)
+    return score
 
 # Q2
 
@@ -23,10 +28,14 @@ if __name__ == '__main__':
     sample_input = parse_input('sample')
 
     # Tests
+    t1 = solve(sample_input)
+    assert t1 == 13, t1
 
     # Puzzle input
-    #puzzle_input = parse_input('puzzle-input')
+    puzzle_input = parse_input('puzzle-input')
 
     # Results
-    print(f'Q1: ')
-    print(f'Q2: ')
+    q1 = solve(puzzle_input)
+    q2 = None
+    print(f'Q1: {q1}')
+    print(f'Q2: {q2}')
