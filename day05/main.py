@@ -5,10 +5,20 @@
 # Q2
 
 # Input
-def parse_input(file):
-    with open(file, 'r') as inp:
-        return []
+def map_parse(m):
+    name = m[0][:-5].split('-')
+    fr = name[0]
+    to = name[2]
+    nums = [ for . in m[1:]]
 
+def parse_input(file):
+    maps = {}
+    with open(file, 'r') as inp:
+        raw = [g for g in inp.read().split('\n\n') if g]
+        seeds = [int(s) for s in raw[0].split()[1:]]
+        _maps = [m.split('\n') for m in raw[1:]]
+        
+            
 
 if __name__ == '__main__':
     # Samples
@@ -21,7 +31,7 @@ if __name__ == '__main__':
     assert t2 == 0, t2
 
     # Puzzle input
-    puzzle_input = parse_input('puzzle-input')
+    #puzzle_input = parse_input('puzzle-input')
 
     # Results
     q1 = 0
